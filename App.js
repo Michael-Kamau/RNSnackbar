@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from "react";
+import React,{useRef} from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -21,13 +21,22 @@ import {
   Colors,
   Header,
 } from "react-native/Libraries/NewAppScreen";
+import SnackBar from "./components/SnackBar";
 
 
 function App() {
   const isDarkMode = useColorScheme() === "dark";
+  const snackBarRef = useRef(null);
+
+
+  const DisplaySnackBar = () => {
+    if (snackBarRef.current) {
+      snackBarRef.current.ShowSnackBarFunction("Snackbar example");
+    }
+  };
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter
   };
 
   return (
@@ -55,8 +64,10 @@ function App() {
               <Text>Icon</Text>
             </View>
           </View>
+          <SnackBar ref={snackBarRef} />
 
-          {/*<Button>Submit</Button>*/}
+          <Button onPress={()=>{DisplaySnackBar()}} title=" Show SnackBar ">
+          </Button>
         </View>
 
       </ScrollView>
