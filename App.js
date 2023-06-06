@@ -36,15 +36,7 @@ function App() {
         <SafeAreaView>
             <ScrollView
                 contentInsetAdjustmentBehavior="automatic"
-                style={{}} contentContainerStyle={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                height: '100%',
-                backgroundColor: '#fafafa',
-                position: 'relative',
-                paddingBottom: 60
-            }}>
+                style={{}} contentContainerStyle={styles.content_container}>
                 <View style={{flex: 1}}>
                     <View style={{backgroundColor: '#485b7d', padding: 15, paddingBottom: 35}}>
                         <Text style={[styles.titleText, {
@@ -59,9 +51,9 @@ function App() {
                     {showNotification &&
                         <TouchableOpacity onPress={() => changeNotificationMessage('The notification has been clicked')}
                                           style={styles.snackbar_container}>
-                            <Text style={{color: 'white', width:'80%', textAlign:'justify'}}>{notificationMessage}</Text>
+                            <Text style={{color: 'white', width:'90%', textAlign:'justify', paddingRight:5}}>{notificationMessage}</Text>
                             <TouchableOpacity onPress={() => setShowNotification(false)}>
-                                <Text style={{fontWeight: '400', color: 'white', fontSize:25}}>x</Text>
+                                <Text style={{fontWeight: '400', color: 'white', fontSize:30}}>x</Text>
                             </TouchableOpacity>
                         </TouchableOpacity>
                     }
@@ -75,17 +67,8 @@ function App() {
                     </View>
                 </View>
 
-
                 <TouchableOpacity
-                    style={{
-                        alignItems: 'center',
-                        backgroundColor: '#70e972',
-                        width: 250,
-                        justifyContent: 'center',
-                        alignSelf: 'center',
-                        borderRadius: 10,
-                        padding: 10
-                    }}
+                    style={styles.button}
                     disabled={showNotification}
                     onPress={() => DisplaySnackBar()}
                 ><Text style={{color: 'white', fontWeight: '400'}}>Show Snackbar</Text></TouchableOpacity>
@@ -96,6 +79,16 @@ function App() {
 }
 
 const styles = StyleSheet.create({
+
+    content_container:{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: '100%',
+        backgroundColor: '#fafafa',
+        position: 'relative',
+        paddingBottom: 60
+    },
     titleText: {
         marginBottom: 8
     },
@@ -130,6 +123,16 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingHorizontal: 8
     },
+
+    button:{
+        alignItems: 'center',
+        backgroundColor: '#70e972',
+        width: 250,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        borderRadius: 10,
+        padding: 10
+    }
 });
 
 export default App;
