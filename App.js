@@ -5,105 +5,131 @@
  * @format
  */
 
-import React,{useRef} from "react";
+import React, {useState} from "react";
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Button
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
-import {
-  Colors,
-  Header,
-} from "react-native/Libraries/NewAppScreen";
-import SnackBar from "./components/SnackBar";
+import {Goal} from "./src/components/Goal";
 
 
 function App() {
-  const isDarkMode = useColorScheme() === "dark";
-  const snackBarRef = useRef(null);
+    const [showNotification, setShowNotification] = useState(true)
+    const [notificationMessage, changeNotificationMessage] = useState('')
 
 
-  const DisplaySnackBar = () => {
-    if (snackBarRef.current) {
-      snackBarRef.current.ShowSnackBarFunction("Snackbar example");
-    }
-  };
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-     flex: 1
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle} contentContainerStyle={{height:'100%', backgroundColor:'#fafafa',position:'relative'}}>
-        <View style={{backgroundColor:'#192436'}}>
-          <Text style={{color:'white', fontWeight:'bold'}}>Afternoon jo</Text>
-          <Text style={{color:'white'}}>Here's the latest</Text>
-          <Text>KES 42,000</Text>
-          <Text style={{color:'white'}}>Total funds</Text>
-        </View>
-        <View style={{padding:10}} >
-          <Text>Your Goals</Text>
+    const DisplaySnackBar = () => {
+        changeNotificationMessage('This is an app notification snackbar to show to the user when they perform an action. Clicking it should change the text')
+        setShowNotification(true)
+        setTimeout(() => {
+            setShowNotification(false)
+        }, 10000)
+    };
 
 
-          <View style={[styles.goal_container,{flexDirection:'row', justifyContent:'space-between', padding:10}]}>
-            <View  >
-              <Text>Goal 1</Text>
-              <Text>KES 12,000</Text>
-            </View>
-            <View style={{flexDirection:'row', justifyContent:'space-between', padding:10}}>
-              <Text>Finish Goal</Text>
-              <Text> | </Text>
-              <Text>Icon</Text>
-            </View>
-          </View>
-          {/*<SnackBar ref={snackBarRef} />*/}
+    return (
+        <SafeAreaView>
+            <ScrollView
+                contentInsetAdjustmentBehavior="automatic"
+                style={{}} contentContainerStyle={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                height: '100%',
+                backgroundColor: '#fafafa',
+                position: 'relative',
+                paddingBottom: 60
+            }}>
+                <View style={{flex: 1}}>
+                    <View style={{backgroundColor: '#485b7d', padding: 15, paddingBottom: 35}}>
+                        <Text style={[styles.titleText, {
+                            color: 'white',
+                            fontSize: 25,
+                            fontWeight: '300'
+                        }]}><Text>Afternoon</Text> <Text style={{fontWeight: '800'}}>jo</Text> </Text>
+                        <Text style={[styles.titleText, {color: 'white'}]}>Here's the latest</Text>
+                        <Text style={[styles.titleText, {fontSize: 25, color: '#70e972'}]}>KES 42,000</Text>
+                        <Text style={[styles.titleText, {color: 'white'}]}>Total funds</Text>
+                    </View>
+                    {showNotification &&
+                        <TouchableOpacity onPress={() => changeNotificationMessage('The notification has been clicked')}
+                                          style={styles.snackbar_container}>
+                            <Text style={{color: 'white', width:'80%', textAlign:'justify'}}>{notificationMessage}</Text>
+                            <TouchableOpacity onPress={() => setShowNotification(false)}>
+                                <Text style={{fontWeight: '400', color: 'white', fontSize:25}}>x</Text>
+                            </TouchableOpacity>
+                        </TouchableOpacity>
+                    }
+
+                    <View style={styles.goals_container}>
+                        <Text style={{paddingBottom: 20, fontWeight: '400', color: '#484444'}}>Your Goals</Text>
+
+                        <Goal name="Goal 1" amount='12,500'></Goal>
+                        <Goal name="Goal 2" amount='14,500'></Goal>
+
+                    </View>
+                </View>
 
 
-        </View>
+                <TouchableOpacity
+                    style={{
+                        alignItems: 'center',
+                        backgroundColor: '#70e972',
+                        width: 250,
+                        justifyContent: 'center',
+                        alignSelf: 'center',
+                        borderRadius: 10,
+                        padding: 10
+                    }}
+                    disabled={showNotification}
+                    onPress={() => DisplaySnackBar()}
+                ><Text style={{color: 'white', fontWeight: '400'}}>Show Snackbar</Text></TouchableOpacity>
 
-        {/*<Button style={{position:'absolute',bottom:0,width:20}} onPress={()=>{DisplaySnackBar()}} title=" Show SnackBar ">*/}
-        {/*</Button>*/}
-
-      </ScrollView>
-    </SafeAreaView>
-  );
+            </ScrollView>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: "400",
-  },
-  highlight: {
-    fontWeight: "700",
-  },
+    titleText: {
+        marginBottom: 8
+    },
 
-  goal_container: {
-    shadowColor: '#000',            // Shadow color
-    shadowOffset: { width: 0, height: 2 },  // Shadow offset (width, height)
-    shadowOpacity: 0.3,             // Shadow opacity
-    shadowRadius: 4,                // Shadow radius
-    elevation: 4, // Android-specific elevation for shadow
-  },
+    snackbar_container: {
+        position: 'absolute',
+        top: 20,
+        // left: 10,
+        width: '95%',
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        backgroundColor: '#eb5581',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        alignSelf:'center'
+    },
+
+    goals_container: {
+        paddingVertical: 20,
+        paddingHorizontal: 10,
+        backgroundColor: '#fafafa',
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        marginTop: -20
+    },
+
+    goal_container: {
+        elevation: 4,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        paddingHorizontal: 8
+    },
 });
 
 export default App;
