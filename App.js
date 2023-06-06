@@ -5,82 +5,134 @@
  * @format
  */
 
-import React from "react";
+import React, {useState} from "react";
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Button
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
-import {
-  Colors,
-  Header,
-} from "react-native/Libraries/NewAppScreen";
+import {Goal} from "./src/components/Goal";
 
 
 function App() {
-  const isDarkMode = useColorScheme() === "dark";
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <View style={{backgroundColor:'#192436'}}>
-          <Text>Afternoon jo</Text>
-          <Text>Here's the latest</Text>
-          <Text>KES 42,000</Text>
-          <Text>Total funds</Text>
-        </View>
-        <View>
-          <Text>Your Goals</Text>
+    const [showNotification, setShowNotification] = useState(false)
+    const [notificationMessage, changeNotificationMessage] = useState('')
 
 
-          <View style={{flex:1, flexDirection:'row', justifyContent:'space-between', backgroundColor:'red', padding:10}}>
-            <View>
-              <Text>Goal 1</Text>
-              <Text>KES 12,000</Text>
+    const DisplaySnackBar = () => {
+        changeNotificationMessage('This is an app notification snackbar to show to the user when they perform an action. Clicking it should change the text')
+        setShowNotification(true)
+        setTimeout(() => {
+            setShowNotification(false)
+        }, 10000)
+    };
 
-            </View>
-            <View>
-              <Text>Icon</Text>
-            </View>
-          </View>
 
-          {/*<Button>Submit</Button>*/}
-        </View>
+    return (
+        <SafeAreaView>
+            <ScrollView
+                contentInsetAdjustmentBehavior="automatic"
+                style={{}} contentContainerStyle={styles.content_container}>
+                <View style={{flex: 1}}>
+                    <View style={{backgroundColor: '#485b7d', padding: 15, paddingBottom: 35}}>
+                        <Text style={[styles.titleText, {
+                            color: 'white',
+                            fontSize: 25,
+                            fontWeight: '300'
+                        }]}><Text>Afternoon</Text> <Text style={{fontWeight: '800'}}>jo</Text> </Text>
+                        <Text style={[styles.titleText, {color: 'white'}]}>Here's the latest</Text>
+                        <Text style={[styles.titleText, {fontSize: 25, color: '#70e972'}]}>KES 42,000</Text>
+                        <Text style={[styles.titleText, {color: 'white'}]}>Total funds</Text>
+                    </View>
+                    {showNotification &&
+                        <TouchableOpacity onPress={() => changeNotificationMessage('The notification has been clicked')}
+                                          style={styles.snackbar_container}>
+                            <Text style={{color: 'white', width:'90%', textAlign:'justify', paddingRight:5}}>{notificationMessage}</Text>
+                            <TouchableOpacity onPress={() => setShowNotification(false)}>
+                                <Text style={{fontWeight: '400', color: 'white', fontSize:30}}>x</Text>
+                            </TouchableOpacity>
+                        </TouchableOpacity>
+                    }
 
-      </ScrollView>
-    </SafeAreaView>
-  );
+                    <View style={styles.goals_container}>
+                        <Text style={{paddingBottom: 20, fontWeight: '400', color: '#484444'}}>Your Goals</Text>
+
+                        <Goal name="Goal 1" amount='12,500'></Goal>
+                        <Goal name="Goal 2" amount='14,500'></Goal>
+
+                    </View>
+                </View>
+
+                <TouchableOpacity
+                    style={styles.button}
+                    disabled={showNotification}
+                    onPress={() => DisplaySnackBar()}
+                ><Text style={{color: 'white', fontWeight: '400'}}>Show Snackbar</Text></TouchableOpacity>
+
+            </ScrollView>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: "400",
-  },
-  highlight: {
-    fontWeight: "700",
-  },
+
+    content_container:{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: '100%',
+        backgroundColor: '#fafafa',
+        position: 'relative',
+        paddingBottom: 60
+    },
+    titleText: {
+        marginBottom: 8
+    },
+
+    snackbar_container: {
+        position: 'absolute',
+        top: 20,
+        // left: 10,
+        width: '95%',
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        backgroundColor: '#eb5581',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        alignSelf:'center'
+    },
+
+    goals_container: {
+        paddingVertical: 20,
+        paddingHorizontal: 10,
+        backgroundColor: '#fafafa',
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        marginTop: -20
+    },
+
+    goal_container: {
+        elevation: 4,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        paddingHorizontal: 8
+    },
+
+    button:{
+        alignItems: 'center',
+        backgroundColor: '#70e972',
+        width: 250,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        borderRadius: 10,
+        padding: 10
+    }
 });
 
 export default App;
