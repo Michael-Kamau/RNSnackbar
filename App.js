@@ -19,7 +19,7 @@ import {Goal} from "./src/components/Goal";
 
 
 function App() {
-    const [showNotification, setShowNotification] = useState(true)
+    const [showNotification, setShowNotification] = useState(false)
     const [notificationMessage, changeNotificationMessage] = useState('')
 
 
